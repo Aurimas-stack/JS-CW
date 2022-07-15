@@ -55,3 +55,28 @@ function isPangram(string) {
   }
   return uniqueLetterArray.length === 26 ? true : false;
 }
+
+// Build a pyramid-shaped tower given a positive integer number of floors. A tower block is represented with "*" character.
+
+function towerBuilder(nFloors) {
+  const towerArray = [];
+  let star = "*";
+  let space = " ";
+  while (nFloors > 0) {
+    const floor = `${space.repeat(nFloors - 1)}${star}${space.repeat(
+      nFloors - 1
+    )}`;
+    nFloors--;
+    towerArray.push(floor);
+    star = star + "**";
+    space = " ";
+  }
+  return towerArray;
+}
+
+//If there is enough space, return 0, and if there isn't, return the number of passengers.
+
+function enough(cap, on, wait) {
+  return on + wait <= cap ? 0 : Math.abs(cap - on - wait);
+}
+
