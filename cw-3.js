@@ -80,3 +80,52 @@ function enough(cap, on, wait) {
   return on + wait <= cap ? 0 : Math.abs(cap - on - wait);
 }
 
+// Implement the function unique_in_order which takes as argument a sequence and returns a list of items without any elements with the same value next to each other and preserving the original order of elements.
+var uniqueInOrder = function (iterable) {
+  const uniqueArray = [];
+  for (let i = 0; i < iterable.length; i++) {
+    if (iterable[i] !== iterable[i + 1]) {
+      uniqueArray.push(iterable[i]);
+    }
+  }
+  return uniqueArray;
+};
+
+// Find the smallest number in the array
+class SmallestIntegerFinder {
+  findSmallestInt(args) {
+    return Math.min.apply(null, args);
+  }
+}
+
+// Alternate string case for letters
+String.prototype.toAlternatingCase = function () {
+  return this.split("")
+    .map((letter) => {
+      const characterCode = letter.charCodeAt(letter);
+      if (characterCode >= 97 && characterCode <= 122) {
+        return letter.toUpperCase();
+      };
+      if (characterCode >= 65 && characterCode <= 90) {
+        return letter.toLowerCase();
+      };
+      return letter;
+    })
+    .join("");
+};
+
+// Find missing letter in the array
+function findMissingLetter(array) {
+  const letter = array.find((_, i) => {
+    const string = array.join("");
+    if (string.charCodeAt(i + 1) - string.charCodeAt(i) === 2) {
+      return string.charCodeAt(i);
+    };
+  });
+  return String.fromCharCode(letter.charCodeAt(letter) + 1);
+}
+
+// Descending order: Input: 42145 Output: 54421
+function descendingOrder(n){
+  return +n.toString().split("").sort((a, b) => +a > +b ? -1 : 1).join("");
+}
