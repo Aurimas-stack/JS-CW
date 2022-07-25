@@ -88,3 +88,60 @@ function findUniq(arr) {
   const sortedArray = arr.sort((a, b) => a - b);
   return sortedArray[0] === sortedArray[1] ? sortedArray.pop() : sortedArray[0];
 }
+
+//Remove needless directions from the array
+function dirReduc(arr) {
+  const initArrLength = arr.length;
+  for (let i = 0; i < arr.length; i++) {
+    const removeDirection = () => arr.splice(i, 2);
+    if (arr[i] === "NORTH" && arr[i + 1] === "SOUTH") {
+      removeDirection();
+    }
+    if (arr[i] === "EAST" && arr[i + 1] === "WEST") {
+      removeDirection();
+    }
+    if (arr[i] === "WEST" && arr[i + 1] === "EAST") {
+      removeDirection();
+    }
+    if (arr[i] === "SOUTH" && arr[i + 1] === "NORTH") {
+      removeDirection();
+    }
+  }
+  if (initArrLength > arr.length) {
+    dirReduc(arr);
+  }
+  return arr;
+}
+
+//Count number of duplicate letters
+function duplicateCount(text) {
+  const lowerCaseText = text.toLowerCase();
+  const countObj = lowerCaseText
+    .split("")
+    .reduce((a, b) => ((a[b] = 0), a), {});
+  for (let i = 0; i < lowerCaseText.length; i++) {
+    if (lowerCaseText[i] in countObj) {
+      countObj[lowerCaseText[i]]++;
+    }
+  }
+  return Object.values(countObj).filter((val) => val > 1).length;
+}
+
+//move zeros to the back
+function moveZeros(arr) {
+  let zeroCounter = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] === 0) {
+      zeroCounter++;
+    }
+  }
+
+  return arr
+    .filter((n) => n !== 0)
+    .concat(
+      Array(zeroCounter)
+        .fill()
+        .map((v) => (v = 0))
+    );
+}
+
