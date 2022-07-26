@@ -145,3 +145,127 @@ function moveZeros(arr) {
     );
 }
 
+//increment the end of the string
+function incrementString(strng) {
+  const zerosArray = [];
+  const notZerosArray = [];
+  const numbers = strng.split("").filter((l) => !isNaN(+l));
+  const string = strng
+    .split("")
+    .filter((l) => isNaN(l))
+    .join("");
+
+  if (isNaN(+strng[strng.length - 1])) {
+    return strng + "1";
+  }
+
+  if (+numbers[0] !== 0) {
+    return string + (+numbers.join("") + 1);
+  }
+
+  if (numbers.every((n) => +n === 0)) {
+    return string + numbers.slice(0, -1).join("") + 1;
+  }
+
+  for (let i = 0; i < numbers.length; i++) {
+    if (+numbers[i] > 0) {
+      notZerosArray.push(numbers[i]);
+    }
+    if (+numbers[i] === 0) {
+      zerosArray.push(numbers[i]);
+    }
+  }
+
+  const addedNumberArray = (+notZerosArray.join("") + 1).toString().split("");
+
+  return addedNumberArray.length === numbers.length
+    ? string + addedNumberArray.join("")
+    : string +
+        numbers.slice(0, -addedNumberArray.length).join("") +
+        addedNumberArray.join("");
+}
+
+//check for valid smileys
+function countSmileys(arr) {
+  const validNose = ["-", "~"];
+  const validEyes = [":", ";"];
+  const validSmile = [")", "D"];
+  const smileyArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    const smiley = arr[i].split("");
+    const withNose =
+      validNose.includes(smiley[1]) &&
+      validEyes.includes(smiley[0]) &&
+      validSmile.includes(smiley[2]);
+    const withoutNose =
+      validEyes.includes(smiley[0]) && validSmile.includes(smiley[1]);
+    if (smiley.length === 3 && withNose) {
+      smileyArr.push(smiley.join(""));
+    }
+    if (smiley.length === 2 && withoutNose) {
+      smileyArr.push(smiley.join(""));
+    }
+  }
+  return smileyArr.length;
+}
+
+//return text as alphabet string position, ex: a = 1, b = 2
+function alphabetPosition(text) {
+  const charCodeArray = [];
+  for (let i = 0; i < text.length; i++) {
+    const characterCode = text.toLowerCase().charCodeAt(i);
+    if (characterCode > 96 && characterCode < 123) {
+      charCodeArray.push(characterCode - 96);
+    }
+  }
+  return charCodeArray.join(" ");
+}
+
+//create likes this function
+function likes(names) {
+  const amountOfNames = names.length;
+  const phrase = amountOfNames < 2 ? "likes this" : "like this";
+  if (amountOfNames === 0) {
+    return `no one ${phrase}`;
+  }
+  if (amountOfNames === 1) {
+    return `${names[0]} ${phrase}`;
+  }
+  if (amountOfNames === 2) {
+    return `${names[0]} and ${names[1]} ${phrase}`;
+  }
+  if (amountOfNames === 3) {
+    return `${names[0]}, ${names[1]} and ${names[2]} ${phrase}`;
+  }
+  if (amountOfNames >= 4) {
+    return `${names[0]}, ${names[1]} and ${
+      names.slice(2).length
+    } others ${phrase}`;
+  }
+}
+
+//product of consecutive Fibonnaci numbers
+function productFib(prod) {
+  const fibStart = [0, 1];
+  const productMaker = [];
+  while (
+    fibStart[fibStart.length - 1] * fibStart[fibStart.length - 2] <=
+    prod
+  ) {
+    fibStart.push(
+      fibStart[fibStart.length - 1] + fibStart[fibStart.length - 2]
+    );
+  }
+  for(let i = 0; i < fibStart.length; i++) {
+    if(fibStart[i] * fibStart[i + 1] === prod) {
+      productMaker.push(fibStart[i], fibStart[i + 1], true);
+      break;
+    }
+    if(fibStart[i + 1] === undefined) {
+      productMaker.push(fibStart[fibStart.length - 2],  fibStart[fibStart.length - 1], false)
+    }
+  }
+  return productMaker;
+}
+
+
