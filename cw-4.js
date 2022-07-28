@@ -268,4 +268,53 @@ function productFib(prod) {
   return productMaker;
 }
 
+// Generate hashtag It must start with a hashtag (#).
+// All words must have their first letter capitalized.
+// If the final result is longer than 140 chars it must return false.
+// If the input or the result is an empty string it must return false
+function generateHashtag(str) {
+  if (str.replace(/\s/g, "").length === 0) return false;
+  const upperCaseStr = str
+    .split(" ")
+    .map((l) => {
+      if (l.charCodeAt(0) > 96 && l.charCodeAt(0) < 122) {
+        return (l = l[0].toUpperCase() + l.split("").slice(1).join(""));
+      }
+      return l;
+    })
+    .join("");
+
+  return upperCaseStr.length >= 140 ? false : `#${upperCaseStr}`;
+}
+
+// Number in expanded form, ex.: 12 -> 10 + 2; 4504 -> 4000 + 500 + 4
+function expandedForm(num) {
+  const numArr = [];
+
+  if (num < 10) return `${num}`;
+
+  while (num >= 10) {
+    const stringNumber = num.toString().split("");
+    numArr.push(+(stringNumber[0] + "0".repeat(stringNumber.length - 1)));
+    num = num - +(stringNumber[0] + "0".repeat(stringNumber.length - 1));
+  }
+  return num === 0 ? numArr.join(" + ") : numArr.join(" + ") + " + " + num;
+}
+
+// Array  difference
+function arrayDiff(a, b) {
+  if (a.length === 0) return [];
+  if (b.length === 0) return a;
+
+  return a.filter((n) => b.indexOf(n) === -1);
+}
+
+//perimeter of squares in rectangle with fibonacci sequence
+function perimeter(n) {
+  const initFib = [0, 1];
+  for (let i = 0; i < n; i++) {
+    initFib.push(initFib[initFib.length - 2] + initFib[initFib.length - 1]);
+  }
+  return 4 * initFib.reduce((a, b) => a + b);
+}
 
