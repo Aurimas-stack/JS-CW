@@ -317,4 +317,72 @@ function perimeter(n) {
   }
   return 4 * initFib.reduce((a, b) => a + b);
 }
+// Create pagination helper class, which takes array and allowed items per page
+function PaginationHelper(collection, itemsPerPage) {
+  this.collection = collection;
+  this.itemsPerPage = itemsPerPage;
+}
+// returns the number of items within the entire collection
+PaginationHelper.prototype.itemCount = function () {
+  return this.collection.length;
+};
+// returns the number of pages
+PaginationHelper.prototype.pageCount = function () {
+  const maxAmountOfEvenPages = (this.itemCount() / this.itemsPerPage) >> 0;
+  if (this.itemCount() - maxAmountOfEvenPages * this.itemsPerPage > 0) {
+    return maxAmountOfEvenPages + 1;
+  }
+  return maxAmountOfEvenPages;
+};
+// returns the number of items on the current page. page_index is zero based.
+// this method should return -1 for pageIndex values that are out of range
+PaginationHelper.prototype.pageItemCount = function (pageIndex) {
+  if (pageIndex < 0 || pageIndex >= this.pageCount()) {
+    return -1;
+  }
+
+  const subArrays = [];
+  for (let i = 0; i < this.itemCount(); i += this.itemsPerPage) {
+    if (i + this.itemsPerPage > this.itemCount()) {
+      subArrays.push(this.collection.slice(i));
+      break;
+    }
+    subArrays.push(this.collection.slice(i, i + this.itemsPerPage));
+  }
+
+  return subArrays[pageIndex].length;
+};
+// determines what page an item is on. Zero based indexes
+// this method should return -1 for itemIndex values that are out of range
+PaginationHelper.prototype.pageIndex = function (itemIndex) {
+  if (!this.collection[itemIndex]) {
+    return -1;
+  }
+  const arrCopy = [...this.collection];
+  let page = 0;
+
+  while (arrCopy.length > 0) {
+    if (
+      arrCopy.splice(0, this.itemsPerPage).includes(this.collection[itemIndex])
+    ) {
+      break;
+    }
+    page++;
+  }
+  return page;
+};
+
+
+// Count characters in a string
+function count (string) {  
+  const countObj = string
+    .split("")
+    .reduce((a, b) => ((a[b] = 0), a), {});
+    for (let i = 0; i < string.length; i++) {
+      if (string[i] in countObj) {
+        countObj[string[i]]++;
+      }
+    }
+  return countObj;
+}
 
