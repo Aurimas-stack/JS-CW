@@ -317,16 +317,15 @@ function perimeter(n) {
   }
   return 4 * initFib.reduce((a, b) => a + b);
 }
+
 // Create pagination helper class, which takes array and allowed items per page
 function PaginationHelper(collection, itemsPerPage) {
   this.collection = collection;
   this.itemsPerPage = itemsPerPage;
 }
-// returns the number of items within the entire collection
 PaginationHelper.prototype.itemCount = function () {
   return this.collection.length;
 };
-// returns the number of pages
 PaginationHelper.prototype.pageCount = function () {
   const maxAmountOfEvenPages = (this.itemCount() / this.itemsPerPage) >> 0;
   if (this.itemCount() - maxAmountOfEvenPages * this.itemsPerPage > 0) {
@@ -334,8 +333,6 @@ PaginationHelper.prototype.pageCount = function () {
   }
   return maxAmountOfEvenPages;
 };
-// returns the number of items on the current page. page_index is zero based.
-// this method should return -1 for pageIndex values that are out of range
 PaginationHelper.prototype.pageItemCount = function (pageIndex) {
   if (pageIndex < 0 || pageIndex >= this.pageCount()) {
     return -1;
@@ -352,8 +349,6 @@ PaginationHelper.prototype.pageItemCount = function (pageIndex) {
 
   return subArrays[pageIndex].length;
 };
-// determines what page an item is on. Zero based indexes
-// this method should return -1 for itemIndex values that are out of range
 PaginationHelper.prototype.pageIndex = function (itemIndex) {
   if (!this.collection[itemIndex]) {
     return -1;
@@ -372,17 +367,98 @@ PaginationHelper.prototype.pageIndex = function (itemIndex) {
   return page;
 };
 
-
 // Count characters in a string
-function count (string) {  
-  const countObj = string
-    .split("")
-    .reduce((a, b) => ((a[b] = 0), a), {});
-    for (let i = 0; i < string.length; i++) {
-      if (string[i] in countObj) {
-        countObj[string[i]]++;
-      }
+function count(string) {
+  const countObj = string.split("").reduce((a, b) => ((a[b] = 0), a), {});
+  for (let i = 0; i < string.length; i++) {
+    if (string[i] in countObj) {
+      countObj[string[i]]++;
     }
+  }
   return countObj;
+}
+
+// Number appearing odd number of times in array
+function findOdd(A) {
+  const counbObj = A.reduce((a, b) => ((a[b] = 0), a), {});
+  for (let i = 0; i < A.length; i++) {
+    if (A[i] in counbObj) {
+      counbObj[A[i]]++;
+    }
+  }
+  return +Object.entries(counbObj).filter((a) => a[1] % 2 === 1)[0][0];
+}
+
+// Break Camel Case
+function solution(string) {
+  const newString = [];
+  for (let i = 0; i < string.length; i++) {
+    const characterCode = string.charCodeAt(i);
+    const nextCharacterCode = string.charCodeAt(i + 1);
+    if (
+      characterCode > 97 &&
+      characterCode < 123 &&
+      nextCharacterCode > 64 &&
+      nextCharacterCode < 90
+    ) {
+      newString.push(string[i]);
+      newString.push(" ");
+    } else {
+      newString.push(string[i]);
+    }
+  }
+  return newString.join("");
+}
+
+// Sort odd numbers in the array in ascending order keeping even number order
+function sortArray(array) {
+  const oddNumArr = array
+    .filter((n) => n % 2 === 1 || n % 2 === -1)
+    .sort((a, b) => a - b);
+  return array.map((n) => {
+    if (n % 2 === 1 || n % 2 === -1) {
+      return oddNumArr.splice(0, 1)[0];
+    }
+    return n;
+  });
+}
+
+// Find symmetric difference A x B x C
+function sym(args) {
+  const argumentsArray = [];
+  for (let i = 0; i < arguments.length; i++) {
+    argumentsArray.push(arguments[i]);
+  }
+  let diff = (arr1, arr2) => [
+    ...arr1.filter((n) => !arr2.includes(n)),
+    ...arr2.filter((n) => !arr1.includes(n)),
+  ];
+
+  return [...new Set(argumentsArray.reduce((a, b) => diff(a, b), []))];
+}
+
+// Update first array from second array
+// if element is not present in first array, add it to first array
+// sort returned array in the alphabetic order
+function updateInventory(arr1, arr2) {
+  const currInventory = arr1;
+  while (arr2.length > 0) {
+    const el = arr2.splice(0, 1);
+    if (currInventory.some((n) => n[1] === el[0][1])) {
+      const index = currInventory.findIndex((n) => n[1] === el[0][1]);
+      currInventory[index][0] += el[0][0];
+    } else {
+      currInventory.push(...el);
+    }
+  }
+  return currInventory.sort((a, b) => {
+    if (a[1][0] < b[1][0]) {
+      return -1;
+    }
+    if (a[1][0] > b[1][0]) {
+      return 1;
+    }
+    return 0;
+  });
 }
 
