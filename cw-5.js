@@ -15,3 +15,22 @@ function high(x) {
     )
   ];
 }
+
+// Validate ISBN-10, last value can be either a number or X to indicate 10
+function validISBN10(isbn) {
+  const pattern = /^([\d]{9}[\d|x]{1})$/i;
+  if (!pattern.test(isbn)) return false;
+
+  return (
+    isbn
+      .split("")
+      .map((v, i) => {
+        if (v === "X") {
+          v = 10;
+        }
+        return +v * (i + 1);
+      })
+      .reduce((a, b) => a + b, 0) %
+      11 === 0
+  );
+}
